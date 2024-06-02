@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>MDIA 2294</title>
+	
+	<style>
+	    thead{
+	        font-weight:bold;
+	    }
+	    
+	    td{
+	        padding-left:5px;
+	        padding-right:5px;	        
+	    }
+	    
+	    td.sub-total{
+	        text-align:right;	        
+	    }
+	</style>
+</head>
+<body>
+	<h1>MDIA 2294: ACME Corp Invoice</h1>
+	
+	<table>
+	    <thead>
+	        <tr>
+	            <td>ITEM</td>
+	            <td>DESCRIPTION</td>
+	            <td>QTY</td>
+	            <td>PRICE</td>
+	            <td>LINE TOTAL</td>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr>
+	            <td>1</td>
+	            <td><input id="line-1-description" type="text" size="40" value="Anvil" /></td>
+	            <td><input id="line-1-quantity" type="text" size="3" value="5" /></td>
+	            <td><input id="line-1-price" type="text" size="6" value="35.00" /></td>
+	            <td class="sub-total"><span id="line-1"></span></td>
+	        </tr>
+	        <tr>
+	            <td>2</td>
+	            <td><input id="line-2-description" type="text" size="40" value="Rocket Skates (each)" /></td>
+	            <td><input id="line-2-quantity" type="text" size="3" value="2" /></td>
+	            <td><input id="line-2-price" type="text" size="6" value="24.99" /></td>
+	            <td class="sub-total"><span id="line-2"></span></td>
+	        </tr>
+	        <tr>
+	            <td>3</td>
+	            <td><input id="line-3-description" type="text" size="40" value="Giant Magnet" /></td>
+	            <td><input id="line-3-quantity" type="text" size="3" value="1" /></td>
+	            <td><input id="line-3-price" type="text" size="6" value="125.50" /></td>
+	            <td class="sub-total"><span id="line-3"></span></td>
+	        </tr>
+	        <tr>
+	            <td>4</td>
+	            <td><input id="line-4-description" type="text" size="40" value="Ball bearings" /></td>
+	            <td><input id="line-4-quantity" type="text" size="3" value="1000" /></td>
+	            <td><input id="line-4-price" type="text" size="6" value="0.25" /></td>
+	            <td class="sub-total"><span id="line-4"></span></td>
+	        </tr>
+	        <tr>
+	            <td>5</td>
+	            <td><input id="line-5-description" type="text" size="40" value="Portable holes" /></td>
+	            <td><input id="line-5-quantity" type="text" size="3" value="12" /></td>
+	            <td><input id="line-5-price" type="text" size="6" value="15.25" /></td>
+	            <td class="sub-total"><span id="line-5"></span></td>
+	        </tr>
+	    </tbody>
+	    <tfoot>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">SUB TOTAL</td>  
+	            <td class="sub-total"><span id="sub-total"></span></td>	        
+	        </tr>
+	        <tr>
+	            <td colspan="4" style="text-align:right;">DISCOUNT</td>  
+	            <td class="sub-total"><span id="discount"></span></td>	        
+	        </tr>
+	        <tr>
+				<td colspan="4" style="text-align:right;">TAX</td>  
+	            <td class="sub-total"><span id="tax"></span></td>	        
+	        </tr>
+	        <tr>
+				<td colspan="4" style="text-align:right;">TOTAL</td>  
+	            <td class="sub-total" style="border-top:solid black 1px"><span id="Total"></span></td>	        
+	        </tr>
+	    </tfoot>	    
+	</table>
+	
+	<div><button id="calculate">Calculate</button></div>
+	<div>NOTE: discounts of 10% are given to orders over $250</div>
+	
+	<script>
+		//The beginning of javascript (I am sorry if there are any typos in the 
+		//Also, if there is a space before the sentence it means it is the continuation
+		// of the comments, I did not like how long it looks on VS code and it gets hard to 
+		// read
+		const calcBtn = document.querySelector("#calculate");
+		const discount_rate =  .10;
+		const tax_rate = .12;
+		//I used const for discount and tax rate because it is a variable that does not change/should not change
+		//Also they are positioned in the global variable so it can be accessed outside of local
+	    function calculate() {
+		//I am using the let statement to start the running total (total amount)
+		// at $0
+		let running_total = 0;
+		// I am calculating the total for the first item.
+		// I used const because it is a variable that will not change it's value
+		// I am directly retrieving the current value of line 1's quantity and value
+		//from the body that was provided
+		//I am calculating the total of item 1 by multiplying the price and quantity
+		//I added the dollar sign to the total of item 1 (total1), as well as adding
+		// .toFixed(2) so the decimals are kept at 2 digits
+		//And finally, I am adding the running total, which is at 0 at the moment, with 
+		// total1 to create the running total for now.
+		const quantity_1 = document.querySelector("#line-1-quantity").value;
+		const price1 = document.querySelector("#line-1-price").value;	
+		const total1 = price1 * quantity_1;
+		document.querySelector("#line-1").innerText = "$" + total1.toFixed(2);
+		running_total= running_total + total1;
+		
+		//Everything from line 125 to 151 are pretty much the same, but the running
+		// total part is slightly different, as it continues to add the total amount
+		// of each item. By the end of item5, it should show the total amount of everything
+		const quantity_2 = document.querySelector("#line-2-quantity").value;
+		const price2 = document.querySelector("#line-2-price").value;
+		const total2 = quantity_2 * price2
+		document.querySelector("#line-2").innerText = "$" + total2.toFixed(2);
+		running_total = running_total + total2;
+		
+		
+		const quantity3 = document.querySelector("#line-3-quantity").value;
+		const price3 = document.querySelector("#line-3-price").value;
+		const total3 = price3 * quantity3;
+		document.querySelector("#line-3").innerText = "$" + total3.toFixed(2);
+		running_total = running_total + total3;
+		
+		
+		const quantity4 = document.querySelector("#line-4-quantity").value;
+		const price4 = document.querySelector("#line-4-price").value;
+		const total4 = price4 * quantity4;
+		document.querySelector("#line-4").innerText = "$" + total4.toFixed(2);
+		running_total = running_total + total4;
+		
+		
+		const quantity5 = document.querySelector("#line-5-quantity").value;
+		const price5 = document.querySelector("#line-5-price").value;
+		const total5 = price5 * quantity5;
+		document.querySelector("#line-5").innerText = "$" + total5.toFixed(2);
+		running_total = running_total + total5;
+
+		//I am directly grabbing the sub total line from the body and make it the 
+		// final running total, before the discounts and other things, plus the 
+		// dollar sign
+		document.querySelector("#sub-total").innerText = "$" + running_total;
+		
+		
+		
+		
+		//Here I am using const because it is a variable that won't change
+		//I am adding a ternary operator to show that if the running total is greater
+		// or equal to $250, the running total will multiply by the discount rate,
+		// that is declaired in the beginning (global), and if the running total is not
+		// greater or equal to $250, nothing will happen to the running total. Thus
+		// I put a 0 there
+		const discount = running_total >= 250 ? running_total * discount_rate : 0;
+		//Same thing as line 115 btw!
+		document.querySelector("#discount").innerText = "$" + discount.toFixed(2);
+		
+		//I think I mentioned too many times why i set it as const so I'm going to 
+		// skip just this time, don't mind me
+		//I am setting the math part here, the part where we both were confused because
+		// of my naming, I am so sorry about that btw
+		//This is displayed in a pretty simple form, it's a math equation
+		// I am letting the afterdiscount amount to be the running total minus the discount
+		// that was calculated before
+		// After that, I am doing the same thing again with aftertax, which is afterdiscount
+		// minus the tax rate, which is mentioned in global scope
+		const afterdiscount = running_total - discount;
+		const aftertax = afterdiscount * tax_rate;
+		//And finally, I am setting a let because the final amount after tax and discount
+		// can be random, it is not always the same amount and alwasy changing. 
+		//Right here I am calculating everything from the beginning to the end and named it
+		// finaltotal, which is just afterdiscount plus aftertax.
+		let finaltotal = afterdiscount + aftertax;
+		//This is also mentioned too many times before, but the explanation is at 115
+		document.querySelector("#tax").innerText = "$" + aftertax.toFixed(2);
+		document.querySelector("#Total").innerText = "$" + finaltotal.toFixed(2);
+
+		/*
+		Overall, I did like this assignment because I actually feel like I learned something
+		I am most likely not the best at coding but in the end I felt accomplished and proud
+		 of myself to able to just code. I am also grateful for all the help my friends, from both
+		 this program and CIS people, and you Airrick! I don't know how many times you thought
+		 to yourself "man she dumb lmao she doesn't even know the basics" but thank you for being
+		 patient with me. I don't know how well I'll do in this class but I will definitely try
+		 my hardest! I will definitely come and bug you more about JS afterclass.*/
+		
+            /*
+
+                Use the following steps to complete your assignment.
+
+                @NOTE: Do not include these comments in your final submission. 
+                       Your final submission MUST include your own comments.
+
+                1. Retrieve the quantities & price for each line
+                2. Calculate the total for each line
+                3. Display each line total to the screen (Be sure to display the result to two decimal places)
+                4. Keep a running total for all lines
+                5. Display the sub-total to screen
+                6. Calculate if the discount should be applied, if so display the discount value to the screen
+                7. Calculate the tax on the sub-total
+                8. Display the calculated to the screen to two decimal places
+                
+            */
+
+    }
+		calcBtn.addEventListener("click", calculate);
+	
+    </script>
+</body>
+</html>
